@@ -1,6 +1,8 @@
 # AWS Secure Multi-Account Landing Zone
 
-> **Built as a portfolio project** demonstrating AWS Control Tower, Organizations, Transit Gateway, multi-region DR, and CI/CD for IaC — aligned to Cloud Platform Engineer roles at Trianz, Leidos, Navy Federal, and BONbLOC.
+> **Built as a portfolio project** demonstrating AWS Control Tower, Organizations, Transit Gateway, multi-region DR, and CI/CD for IaC
+
+![Landing Zone Architecture Diagram](./img/intro.png)
 
 ---
 
