@@ -2,7 +2,7 @@
 
 Create the AWS Organizations structure that Control Tower will sit on top of. You'll leave today with a root OU, a Management account, and two child OUs (Security and Workloads) — the skeleton of your landing zone.
 
-![Project-Architecture](../docs/aws_architecture.svg)
+![Project-Architecture](./docs/aws_architecture.svg)
 
 ## Step-by-Step
 
