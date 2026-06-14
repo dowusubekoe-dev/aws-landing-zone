@@ -2,6 +2,8 @@
 
 Create the AWS Organizations structure that Control Tower will sit on top of. You'll leave today with a root OU, a Management account, and two child OUs (Security and Workloads) — the skeleton of your landing zone.
 
+![Project-Architecture](../docs/aws_architecture.svg)
+
 ## Step-by-Step
 
 01. Log into AWS free tier account (root account). This becomes your Management Account. Tag it clearly.
@@ -12,41 +14,145 @@ Create the AWS Organizations structure that Control Tower will sit on top of. Yo
 06. Create your first SCP: a DenyExpensiveServices policy — attach it to the Workloads OU to block EC2 types above t3.medium.
 07. Document the structure in a README.md in a new GitHub repo called aws-landing-zone. Screenshot your OU tree.
 
-**Step 1: Gather Your Email Aliases**
-
-Because every AWS account requires a unique root email address, you will use Gmail's plus-addressing to route all root notifications to your single primary inbox.
-Assuming your primary email is `yourname@gmail.com`, prepare these three variations:
-
-* **Security-Audit:** `yourname+security@gmail.com`
-* **Development (Dev):** `yourname+dev@gmail.com`
-* **Production (Prod):** `yourname+prod@gmail.com`
+Here are the correct plus-addresses for your AWS member accounts using `cloud.sec101.insights@gmail.com` as the base:
 
 ---
 
-**Step 2: Create the Member Accounts in AWS**
+## Your Email Aliases
 
-- Log into the **AWS Management Console** using the root or administrator credentials of your **Management Account** (the main/billing account).
-- Search for and navigate to the **AWS Organizations** console.
-- On the left navigation pane, select **AWS accounts**.
+| Account | AWS Account Name | Root Email Address |
+|---------|-----------------|-------------------|
+| Management | *(already exists)* | `cloud.sec101.insights@gmail.com` |
+| Security-Audit | `Security-Audit` | `cloud.sec101.insights+security2@gmail.com` |
+| Development | `Development` | `cloud.sec101.insights+dev2@gmail.com` |
+| Production | `Production` | `cloud.sec101.insights+prod2@gmail.com` |
 
-![AWS-Root-Access](../img/aw-root-access.png)
+---
 
-- Click the **Add an AWS account** button, then select **Create an AWS account**.
+## How Plus-Addressing Works
 
-![Security-Group-OU](../img/sec-group-ou-created.png)
+Gmail ignores everything between `+` and `@` for delivery — so all four addresses land in the **same inbox** (`cloud.sec101.insights@gmail.com`), but AWS treats each as a **unique email address**, which is required since every AWS account must have a distinct root email.
 
-- Fill out the details for the first account (**Security-Audit**):
-    * **AWS account name:** `Security-Audit`
-    * **Root user email address:** `yourname+security@gmail.com`
-    * **IAM role name:** Leave it as the default `OrganizationAccountAccessRole` (this allows you to easily switch roles from your main account to manage it later).
-- Click **Create AWS account**.
+---
 
-![Security-OU](../img/security-ou.png)
+## What to Enter in AWS Organizations
 
-- **Repeat this exact process** two more times to create the remaining accounts:
-    * Name: `Development` | Email: `yourname+dev@gmail.com`
-    * Name: `Production` | Email: `yourname+prod@gmail.com`
+When you reach **Step 2 → Create AWS account**, fill in each account like this:
 
+```bash
+# Verify you're using the right profile for your management account
+aws organizations list-accounts \
+  --profile cloud-eng-iac \
+  --query 'Accounts[?Status==`ACTIVE`].{ID:Id,Name:Name,Email:Email}' \
+  --output table
+
+# Create Security-Audit
+aws organizations create-account \
+  --email "cloud.sec101.insights+security2@gmail.com" \
+  --account-name "Security-Audit" \
+  --role-name "OrganizationAccountAccessRole" \
+  --profile cloud-eng-iac
+
+# Create Development
+aws organizations create-account \
+  --email "cloud.sec101.insights+dev2@gmail.com" \
+  --account-name "Development" \
+  --role-name "OrganizationAccountAccessRole" \
+  --profile cloud-eng-iac
+
+# Create Production
+aws organizations create-account \
+  --email "cloud.sec101.insights+prod2@gmail.com" \
+  --account-name "Production" \
+  --role-name "OrganizationAccountAccessRole" \
+  --profile cloud-eng-iac
+
+# Each create-account call returns a request ID, not the account ID immediately — account creation is async and takes 1–2 minutes. Check the status like this:
+
+# Check creation status — replace REQUEST_ID with the value from each create-account response
+aws organizations describe-create-account-status \
+  --create-account-request-id <REQUEST_ID> \
+  --profile cloud-eng-iac \
+  --query 'CreateAccountStatus.{State:State,AccountId:AccountId,FailureReason:FailureReason}'
+```
+
+**Account 1 — Security-Audit**
+```
+AWS account name:       Security-Audit
+Root user email:        cloud.sec101.insights+security2@gmail.com
+IAM role name:          OrganizationAccountAccessRole
+```
+
+**Account 2 — Development**
+```
+AWS account name:       Development
+Root user email:        cloud.sec101.insights+dev2@gmail.com
+IAM role name:          OrganizationAccountAccessRole
+```
+
+**Account 3 — Production**
+```
+AWS account name:       Production
+Root user email:        cloud.sec101.insights+prod2@gmail.com
+IAM role name:          OrganizationAccountAccessRole
+```
+
+---
+
+## Move Accounts into OUs
+
+```bash
+# First get your OU IDs
+aws organizations list-roots \
+  --profile cloud-eng-iac \
+  --query 'Roots[0].Id' \
+  --output text
+
+# List OUs under root — replace ROOT_ID with the value above
+aws organizations list-organizational-units-for-parent \
+  --parent-id <ROOT_ID> \
+  --profile cloud-eng-iac \
+  --query 'OrganizationalUnits[*].{ID:Id,Name:Name}' \
+  --output table
+
+# Move Security-Audit into Security OU
+aws organizations move-account \
+  --account-id <SECURITY_AUDIT_NEW_ID> \
+  --source-parent-id <ROOT_ID> \
+  --destination-parent-id <SECURITY_OU_ID> \
+  --profile cloud-eng-iac
+
+# Move Development into Workloads OU
+aws organizations move-account \
+  --account-id <DEV_NEW_ID> \
+  --source-parent-id <ROOT_ID> \
+  --destination-parent-id <WORKLOADS_OU_ID> \
+  --profile cloud-eng-iac
+
+# Move Production into Workloads OU
+aws organizations move-account \
+  --account-id <PROD_NEW_ID> \
+  --source-parent-id <ROOT_ID> \
+  --destination-parent-id <WORKLOADS_OU_ID> \
+  --profile cloud-eng-iac
+
+```
+
+## Final Verification
+
+You should see all 4 accounts ACTIVE with the correct +security2, +dev2, +prod2 emails.
+
+```bash
+aws organizations list-accounts \
+  --profile cloud-eng-iac \
+  --query 'Accounts[*].{ID:Id,Name:Name,Email:Email,Status:Status}' \
+  --output table
+
+```
+
+## One Thing to Watch For
+
+AWS sends a **verification email** to each root address when the account is created. Since all three land in the same Gmail inbox, check for emails from `no-reply@signin.aws` and verify each one. They'll arrive within a few minutes of creating each account — complete the verification before moving to the next account creation to keep things clean.
 
 
 > 💡 *Note: It may take a couple of minutes for AWS to finish provisioning each account. You can track the status under the "Creation status" tab in the Organizations dashboard.*
