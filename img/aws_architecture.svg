@@ -1,0 +1,285 @@
+<svg viewBox="0 0 900 680" xmlns="http://www.w3.org/2000/svg" font-family="'Courier New',monospace" style="background:#0d1117">
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#3d5a7a"/></marker>
+    <marker id="arr-cyan" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#00d4ff"/></marker>
+    <marker id="arr-green" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#00e676"/></marker>
+    <marker id="arr-orange" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#ffab40"/></marker>
+    <marker id="arr-red" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#ff5252"/></marker>
+    <marker id="arr-purple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#bb86fc"/></marker>
+  </defs>
+
+  <!-- OUTER: AWS Organizations Root OU -->
+  <rect x="10" y="10" width="880" height="660" rx="12" fill="none" stroke="#1e3a5f" stroke-width="2" stroke-dasharray="8,4"/>
+  <rect x="10" y="10" width="275" height="22" rx="4" fill="#0d1f35"/>
+  <text x="20" y="26" fill="#4a7fa5" font-size="11" font-weight="bold">AWS ORGANIZATIONS — ROOT OU</text>
+
+  <!-- MANAGEMENT ACCOUNT -->
+  <rect x="30" y="48" width="185" height="175" rx="8" fill="#0a1628" stroke="#00d4ff" stroke-width="1.8"/>
+  <rect x="30" y="48" width="185" height="22" rx="8" fill="#00d4ff" fill-opacity="0.15"/>
+  <text x="122" y="63" fill="#00d4ff" font-size="9.5" text-anchor="middle" font-weight="bold">MANAGEMENT ACCOUNT</text>
+  <text x="122" y="77" fill="#4a7fa5" font-size="7.5" text-anchor="middle">428101261622</text>
+
+  <rect x="40" y="84" width="78" height="34" rx="5" fill="#0d1f35" stroke="#1e3a5f"/>
+  <text x="79" y="98" fill="#00d4ff" font-size="8" text-anchor="middle">Control Tower</text>
+  <text x="79" y="110" fill="#4a7fa5" font-size="7" text-anchor="middle">+ Account Factory</text>
+
+  <rect x="128" y="84" width="78" height="34" rx="5" fill="#0d1f35" stroke="#1e3a5f"/>
+  <text x="167" y="98" fill="#00d4ff" font-size="8" text-anchor="middle">Organizations</text>
+  <text x="167" y="110" fill="#4a7fa5" font-size="7" text-anchor="middle">+ SCPs</text>
+
+  <rect x="40" y="126" width="165" height="30" rx="5" fill="#0d1f35" stroke="#1e3a5f"/>
+  <text x="122" y="140" fill="#00d4ff" font-size="7.5" text-anchor="middle">GitHub Actions CI/CD</text>
+  <text x="122" y="151" fill="#4a7fa5" font-size="7" text-anchor="middle">fmt · validate · plan · apply</text>
+
+  <rect x="40" y="164" width="165" height="28" rx="5" fill="#0d1f35" stroke="#1e3a5f"/>
+  <text x="122" y="177" fill="#00d4ff" font-size="7.5" text-anchor="middle">GitHub OIDC Role</text>
+  <text x="122" y="188" fill="#4a7fa5" font-size="7" text-anchor="middle">no static keys · S3 tfstate</text>
+
+  <text x="122" y="213" fill="#3d5a7a" font-size="7" text-anchor="middle">cloud.sec101.insights@gmail.com</text>
+
+  <!-- SECURITY OU -->
+  <rect x="30" y="232" width="185" height="185" rx="8" fill="none" stroke="#bb86fc" stroke-width="1.4" stroke-dasharray="5,3"/>
+  <rect x="30" y="232" width="100" height="18" rx="4" fill="#1a0a2e"/>
+  <text x="38" y="245" fill="#bb86fc" font-size="9" font-weight="bold">SECURITY OU</text>
+
+  <rect x="40" y="256" width="165" height="62" rx="6" fill="#0d1117" stroke="#bb86fc" stroke-width="1.2"/>
+  <text x="122" y="273" fill="#bb86fc" font-size="8.5" text-anchor="middle" font-weight="bold">Log Archive Account</text>
+  <text x="122" y="286" fill="#6a4a9a" font-size="7.5" text-anchor="middle">CloudTrail · Config · CW Logs</text>
+  <text x="122" y="297" fill="#6a4a9a" font-size="7" text-anchor="middle">S3 centralized log bucket</text>
+  <text x="122" y="308" fill="#3d2a60" font-size="7" text-anchor="middle">447444645614</text>
+
+  <rect x="40" y="328" width="165" height="60" rx="6" fill="#0d1117" stroke="#bb86fc" stroke-width="1.2"/>
+  <text x="122" y="345" fill="#bb86fc" font-size="8.5" text-anchor="middle" font-weight="bold">Audit Account</text>
+  <text x="122" y="358" fill="#6a4a9a" font-size="7.5" text-anchor="middle">Read-only security access</text>
+  <text x="122" y="369" fill="#6a4a9a" font-size="7" text-anchor="middle">SNS · Config rules</text>
+  <text x="122" y="392" fill="#4a3060" font-size="7" text-anchor="middle" font-style="italic">auto-provisioned by Control Tower</text>
+
+  <!-- Management → Security OU arrow -->
+  <line x1="122" y1="224" x2="122" y2="232" stroke="#bb86fc" stroke-width="1.2" marker-end="url(#arr-purple)"/>
+
+  <!-- WORKLOADS OU -->
+  <rect x="245" y="48" width="400" height="400" rx="8" fill="none" stroke="#1e3a5f" stroke-width="1.4" stroke-dasharray="5,3"/>
+  <rect x="245" y="48" width="115" height="18" rx="4" fill="#0a1628"/>
+  <text x="253" y="61" fill="#4a7fa5" font-size="9" font-weight="bold">WORKLOADS OU</text>
+
+  <!-- SCP banner -->
+  <rect x="256" y="72" width="378" height="18" rx="4" fill="#1a1228" stroke="#bb86fc" stroke-width="0.8"/>
+  <text x="445" y="84" fill="#bb86fc" font-size="7.5" text-anchor="middle">SCP: DenyExpensiveEC2 (t2.*/t3.* only) · DenyNonApprovedRegions (us-east-1, us-west-2)</text>
+
+  <!-- DEV ACCOUNT -->
+  <rect x="258" y="98" width="175" height="210" rx="7" fill="#0a1628" stroke="#ffab40" stroke-width="1.5"/>
+  <rect x="258" y="98" width="175" height="22" rx="7" fill="#ffab40" fill-opacity="0.12"/>
+  <text x="345" y="113" fill="#ffab40" font-size="9.5" text-anchor="middle" font-weight="bold">DEV ACCOUNT</text>
+  <text x="345" y="126" fill="#6a5a3a" font-size="7" text-anchor="middle">187711699071</text>
+
+  <rect x="267" y="133" width="158" height="28" rx="4" fill="#0d1117" stroke="#1e3a5f"/>
+  <text x="346" y="146" fill="#ffab40" font-size="8" text-anchor="middle">VPC — 10.1.0.0/16</text>
+  <text x="346" y="157" fill="#3d5a7a" font-size="7" text-anchor="middle">us-east-1</text>
+
+  <rect x="267" y="169" width="76" height="26" rx="4" fill="#0d1117" stroke="#1e3a5f"/>
+  <text x="305" y="181" fill="#4a7fa5" font-size="7.5" text-anchor="middle">Public Subnet</text>
+  <text x="305" y="191" fill="#3d5a7a" font-size="6.5" text-anchor="middle">10.1.0.0/20</text>
+
+  <rect x="350" y="169" width="76" height="26" rx="4" fill="#0d1117" stroke="#1e3a5f"/>
+  <text x="388" y="181" fill="#4a7fa5" font-size="7.5" text-anchor="middle">Private Subnet</text>
+  <text x="388" y="191" fill="#3d5a7a" font-size="6.5" text-anchor="middle">10.1.64.0/20</text>
+
+  <rect x="267" y="202" width="158" height="24" rx="4" fill="#0d1117" stroke="#1e3a5f"/>
+  <text x="346" y="217" fill="#4a7fa5" font-size="7.5" text-anchor="middle">EC2 t3.micro (test)</text>
+
+  <rect x="267" y="234" width="158" height="24" rx="4" fill="#0d1117" stroke="#1e3a5f"/>
+  <text x="346" y="249" fill="#4a7fa5" font-size="7.5" text-anchor="middle">LandingZoneAdmin Role</text>
+
+  <rect x="267" y="266" width="158" height="24" rx="4" fill="#0d1117" stroke="#1e3a5f"/>
+  <text x="346" y="279" fill="#4a7fa5" font-size="7.5" text-anchor="middle">CW Logs → Log Archive</text>
+  <text x="346" y="289" fill="#3d5a7a" font-size="7" text-anchor="middle">cross-account subscription</text>
+
+  <!-- PROD ACCOUNT -->
+  <rect x="458" y="98" width="175" height="210" rx="7" fill="#0a1628" stroke="#00e676" stroke-width="1.5"/>
+  <rect x="458" y="98" width="175" height="22" rx="7" fill="#00e676" fill-opacity="0.08"/>
+  <text x="545" y="113" fill="#00e676" font-size="9.5" text-anchor="middle" font-weight="bold">PROD ACCOUNT</text>
+  <text x="545" y="126" fill="#2a5a3a" font-size="7" text-anchor="middle">947999370443</text>
+
+  <rect x="467" y="133" width="158" height="28" rx="4" fill="#0d1117" stroke="#1e3a5f"/>
+  <text x="546" y="146" fill="#00e676" font-size="8" text-anchor="middle">VPC — 10.2.0.0/16</text>
+  <text x="546" y="157" fill="#3d5a7a" font-size="7" text-anchor="middle">us-east-1</text>
+
+  <rect x="467" y="169" width="76" height="26" rx="4" fill="#0d1117" stroke="#1e3a5f"/>
+  <text x="505" y="181" fill="#4a7fa5" font-size="7.5" text-anchor="middle">Public Subnet</text>
+  <text x="505" y="191" fill="#3d5a7a" font-size="6.5" text-anchor="middle">10.2.0.0/20</text>
+
+  <rect x="550" y="169" width="76" height="26" rx="4" fill="#0d1117" stroke="#1e3a5f"/>
+  <text x="588" y="181" fill="#4a7fa5" font-size="7.5" text-anchor="middle">Private Subnet</text>
+  <text x="588" y="191" fill="#3d5a7a" font-size="6.5" text-anchor="middle">10.2.64.0/20</text>
+
+  <rect x="467" y="202" width="158" height="24" rx="4" fill="#0d1117" stroke="#1e3a5f"/>
+  <text x="546" y="217" fill="#4a7fa5" font-size="7.5" text-anchor="middle">EC2 t3.micro + ASG (prod)</text>
+
+  <rect x="467" y="234" width="158" height="24" rx="4" fill="#0d1117" stroke="#1e3a5f"/>
+  <text x="546" y="249" fill="#4a7fa5" font-size="7.5" text-anchor="middle">SSM Patch Manager</text>
+
+  <rect x="467" y="266" width="158" height="24" rx="4" fill="#0d1117" stroke="#1e3a5f"/>
+  <text x="546" y="279" fill="#4a7fa5" font-size="7.5" text-anchor="middle">Parameter Store (SecureString)</text>
+  <text x="546" y="289" fill="#3d5a7a" font-size="7" text-anchor="middle">AWS Config · 4 managed rules</text>
+
+  <!-- TRANSIT GATEWAY -->
+  <rect x="258" y="320" width="375" height="116" rx="7" fill="#0d1117" stroke="#00d4ff" stroke-width="1.6"/>
+  <rect x="258" y="320" width="375" height="22" rx="7" fill="#00d4ff" fill-opacity="0.08"/>
+  <text x="445" y="335" fill="#00d4ff" font-size="9.5" text-anchor="middle" font-weight="bold">TRANSIT GATEWAY — Hub-and-Spoke</text>
+
+  <rect x="268" y="348" width="110" height="32" rx="4" fill="#0a1628" stroke="#1e3a5f"/>
+  <text x="323" y="361" fill="#ffab40" font-size="7.5" text-anchor="middle">Dev VPC Attachment</text>
+  <text x="323" y="372" fill="#3d5a7a" font-size="6.5" text-anchor="middle">private subnets</text>
+
+  <rect x="390" y="348" width="110" height="32" rx="4" fill="#0a1628" stroke="#1e3a5f"/>
+  <text x="445" y="361" fill="#00e676" font-size="7.5" text-anchor="middle">Prod VPC Attachment</text>
+  <text x="445" y="372" fill="#3d5a7a" font-size="6.5" text-anchor="middle">private subnets</text>
+
+  <rect x="512" y="348" width="110" height="32" rx="4" fill="#0a1628" stroke="#bb86fc" stroke-width="0.8" stroke-dasharray="3,2"/>
+  <text x="567" y="361" fill="#bb86fc" font-size="7.5" text-anchor="middle">VGW + CGW</text>
+  <text x="567" y="372" fill="#4a3060" font-size="6.5" text-anchor="middle">Direct Connect / VPN</text>
+
+  <text x="445" y="402" fill="#3d5a7a" font-size="7.5" text-anchor="middle">Route: 10.0.0.0/8 → TGW · Shared via AWS RAM</text>
+  <text x="445" y="415" fill="#3d5a7a" font-size="7" text-anchor="middle">Dev ↔ Prod cross-account traffic · auto-accept enabled</text>
+  <text x="445" y="428" fill="#3d5a7a" font-size="7" text-anchor="middle">Management account → cloud-eng-iac profile</text>
+
+  <!-- Dev/Prod → TGW arrows -->
+  <line x1="345" y1="308" x2="345" y2="320" stroke="#ffab40" stroke-width="1.2" stroke-dasharray="3,2" marker-end="url(#arr-orange)"/>
+  <line x1="545" y1="308" x2="545" y2="320" stroke="#00e676" stroke-width="1.2" stroke-dasharray="3,2" marker-end="url(#arr-green)"/>
+
+  <!-- Management → Workloads OU -->
+  <line x1="215" y1="115" x2="245" y2="115" stroke="#00d4ff" stroke-width="1.2" marker-end="url(#arr-cyan)"/>
+
+  <!-- MONITORING LAYER -->
+  <rect x="662" y="48" width="218" height="400" rx="8" fill="#0a1117" stroke="#1e3a5f" stroke-width="1.2"/>
+  <rect x="662" y="48" width="218" height="22" rx="8" fill="#0a1628"/>
+  <text x="771" y="63" fill="#4a7fa5" font-size="9" text-anchor="middle" font-weight="bold">MONITORING LAYER</text>
+
+  <rect x="672" y="78" width="198" height="64" rx="5" fill="#0d1117" stroke="#1e3a5f"/>
+  <text x="771" y="94" fill="#00d4ff" font-size="8.5" text-anchor="middle" font-weight="bold">CloudWatch</text>
+  <text x="771" y="107" fill="#4a7fa5" font-size="7.5" text-anchor="middle">EC2 StatusCheck → DR alarm</text>
+  <text x="771" y="118" fill="#3d5a7a" font-size="7" text-anchor="middle">CPU · Network · Dashboard</text>
+  <text x="771" y="129" fill="#3d5a7a" font-size="7" text-anchor="middle">Cross-account log destination</text>
+
+  <rect x="672" y="152" width="198" height="64" rx="5" fill="#0d1117" stroke="#1e3a5f"/>
+  <text x="771" y="168" fill="#00d4ff" font-size="8.5" text-anchor="middle" font-weight="bold">Systems Manager</text>
+  <text x="771" y="181" fill="#4a7fa5" font-size="7.5" text-anchor="middle">Patch Manager (Sun 02:00 UTC)</text>
+  <text x="771" y="192" fill="#3d5a7a" font-size="7" text-anchor="middle">Parameter Store · Run Command</text>
+  <text x="771" y="203" fill="#3d5a7a" font-size="7" text-anchor="middle">Maintenance Window</text>
+
+  <rect x="672" y="226" width="198" height="64" rx="5" fill="#0d1117" stroke="#1e3a5f"/>
+  <text x="771" y="242" fill="#00d4ff" font-size="8.5" text-anchor="middle" font-weight="bold">AWS Config</text>
+  <text x="771" y="255" fill="#4a7fa5" font-size="7.5" text-anchor="middle">s3-public-read-prohibited</text>
+  <text x="771" y="266" fill="#4a7fa5" font-size="7.5" text-anchor="middle">restricted-ssh · mfa-enabled</text>
+  <text x="771" y="277" fill="#3d5a7a" font-size="7" text-anchor="middle">encrypted-volumes · continuous eval</text>
+
+  <rect x="672" y="300" width="198" height="44" rx="5" fill="#0d1117" stroke="#1e3a5f"/>
+  <text x="771" y="317" fill="#00d4ff" font-size="8.5" text-anchor="middle" font-weight="bold">SNS — Ops Alerts</text>
+  <text x="771" y="330" fill="#4a7fa5" font-size="7.5" text-anchor="middle">Email · alarm actions · DR trigger</text>
+
+  <rect x="672" y="354" width="198" height="44" rx="5" fill="#0d1117" stroke="#1e3a5f"/>
+  <text x="771" y="371" fill="#00d4ff" font-size="8.5" text-anchor="middle" font-weight="bold">Terraform State</text>
+  <text x="771" y="384" fill="#4a7fa5" font-size="7.5" text-anchor="middle">S3 backend · DynamoDB lock</text>
+
+  <rect x="672" y="408" width="198" height="28" rx="5" fill="#0d1117" stroke="#00d4ff" stroke-width="0.8"/>
+  <text x="771" y="425" fill="#00d4ff" font-size="7.5" text-anchor="middle">GitHub OIDC Role (no static keys)</text>
+
+  <!-- Prod → Monitoring arrow -->
+  <line x1="633" y1="200" x2="662" y2="120" stroke="#3d5a7a" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arr)"/>
+
+  <!-- DR REGION -->
+  <rect x="30" y="458" width="850" height="198" rx="8" fill="#140808" stroke="#ff5252" stroke-width="1.6" stroke-dasharray="6,3"/>
+  <rect x="30" y="458" width="308" height="20" rx="4" fill="#2a0808"/>
+  <text x="40" y="472" fill="#ff5252" font-size="9" font-weight="bold">DR REGION — us-west-2 · PILOT LIGHT PATTERN</text>
+
+  <rect x="555" y="461" width="80" height="15" rx="3" fill="#2a0808" stroke="#ff5252" stroke-width="0.8"/>
+  <text x="595" y="472" fill="#ff5252" font-size="7.5" text-anchor="middle">RTO: 60 min</text>
+  <rect x="643" y="461" width="80" height="15" rx="3" fill="#2a0808" stroke="#ff5252" stroke-width="0.8"/>
+  <text x="683" y="472" fill="#ff5252" font-size="7.5" text-anchor="middle">RPO: 15 min</text>
+  <rect x="731" y="461" width="138" height="15" rx="3" fill="#2a0808" stroke="#ff5252" stroke-width="0.8"/>
+  <text x="800" y="472" fill="#ff5252" font-size="7.5" text-anchor="middle">CW Alarm → ASG Scale-up</text>
+
+  <!-- DR VPC -->
+  <rect x="40" y="482" width="180" height="162" rx="6" fill="#0d1117" stroke="#ff5252" stroke-width="1.2"/>
+  <text x="130" y="497" fill="#ff5252" font-size="8.5" text-anchor="middle" font-weight="bold">DR VPC — 10.3.0.0/16</text>
+  <text x="130" y="509" fill="#6a2a2a" font-size="7" text-anchor="middle">us-west-2</text>
+
+  <rect x="50" y="516" width="76" height="26" rx="4" fill="#0a1117" stroke="#1e3a5f"/>
+  <text x="88" y="528" fill="#4a7fa5" font-size="7.5" text-anchor="middle">Private-2a</text>
+  <text x="88" y="538" fill="#3d5a7a" font-size="6.5" text-anchor="middle">10.3.64.0/20</text>
+
+  <rect x="134" y="516" width="76" height="26" rx="4" fill="#0a1117" stroke="#1e3a5f"/>
+  <text x="172" y="528" fill="#4a7fa5" font-size="7.5" text-anchor="middle">Private-2b</text>
+  <text x="172" y="538" fill="#3d5a7a" font-size="6.5" text-anchor="middle">10.3.80.0/20</text>
+
+  <rect x="50" y="550" width="160" height="28" rx="4" fill="#2a0808" stroke="#ff5252" stroke-width="0.8"/>
+  <text x="130" y="562" fill="#ff5252" font-size="7.5" text-anchor="middle">AMI Pre-staged</text>
+  <text x="130" y="572" fill="#6a2a2a" font-size="7" text-anchor="middle">copied from prod · monthly refresh</text>
+
+  <rect x="50" y="586" width="160" height="46" rx="4" fill="#0d1117" stroke="#ff5252" stroke-width="0.8"/>
+  <text x="130" y="600" fill="#ff5252" font-size="7.5" text-anchor="middle">Auto Scaling Group</text>
+  <text x="130" y="612" fill="#6a2a2a" font-size="7" text-anchor="middle">min=0  desired=0  max=2</text>
+  <text x="130" y="624" fill="#6a2a2a" font-size="7" text-anchor="middle">scales to 2 on CW alarm</text>
+
+  <!-- S3 CRR -->
+  <rect x="236" y="482" width="175" height="80" rx="6" fill="#0d1117" stroke="#ff5252" stroke-width="1.2"/>
+  <text x="323" y="498" fill="#ff5252" font-size="8.5" text-anchor="middle" font-weight="bold">S3 Cross-Region Replication</text>
+  <text x="323" y="511" fill="#4a7fa5" font-size="7.5" text-anchor="middle">prod-bucket (us-east-1)</text>
+  <text x="323" y="522" fill="#3d5a7a" font-size="7" text-anchor="middle">→ dr-bucket (us-west-2)</text>
+  <text x="323" y="533" fill="#3d5a7a" font-size="7" text-anchor="middle">continuous · lag ≤ 15 min (RPO)</text>
+
+  <!-- Route 53 -->
+  <rect x="236" y="572" width="175" height="64" rx="6" fill="#0d1117" stroke="#ff5252" stroke-width="1.2"/>
+  <text x="323" y="588" fill="#ff5252" font-size="8.5" text-anchor="middle" font-weight="bold">Route 53</text>
+  <text x="323" y="601" fill="#4a7fa5" font-size="7.5" text-anchor="middle">Health check → prod ALB</text>
+  <text x="323" y="612" fill="#3d5a7a" font-size="7" text-anchor="middle">Failover record → DR ALB</text>
+  <text x="323" y="623" fill="#3d5a7a" font-size="7" text-anchor="middle">TTL: 60s · auto-cutover</text>
+
+  <!-- DR Runbook -->
+  <rect x="428" y="482" width="210" height="162" rx="6" fill="#0d1117" stroke="#ff5252" stroke-width="1.2"/>
+  <text x="533" y="498" fill="#ff5252" font-size="8.5" text-anchor="middle" font-weight="bold">DR Runbook</text>
+
+  <text x="438" y="514" fill="#4a7fa5" font-size="7.5">Trigger Conditions:</text>
+  <text x="438" y="526" fill="#3d5a7a" font-size="7">  CW alarm: StatusCheckFailed ≥ 1</text>
+  <text x="438" y="537" fill="#3d5a7a" font-size="7">  Manual P1 incident declaration</text>
+
+  <text x="438" y="552" fill="#4a7fa5" font-size="7.5">Failover Steps:</text>
+  <text x="438" y="563" fill="#3d5a7a" font-size="7">  1. Confirm degradation (5 min)</text>
+  <text x="438" y="574" fill="#3d5a7a" font-size="7">  2. Scale DR ASG → desired=2 (10 min)</text>
+  <text x="438" y="585" fill="#3d5a7a" font-size="7">  3. Update Route 53 → DR ALB (5 min)</text>
+  <text x="438" y="596" fill="#3d5a7a" font-size="7">  4. Verify health + notify stakeholders</text>
+
+  <text x="438" y="612" fill="#4a7fa5" font-size="7.5">Failback:</text>
+  <text x="438" y="623" fill="#3d5a7a" font-size="7">  Restore prod → reverse DNS → ASG=0</text>
+  <text x="438" y="634" fill="#3d5a7a" font-size="7">  Monthly test: 1st Sunday each month</text>
+
+  <!-- Terraform Modules -->
+  <rect x="656" y="482" width="212" height="162" rx="6" fill="#0d1117" stroke="#00e676" stroke-width="1.2"/>
+  <text x="762" y="498" fill="#00e676" font-size="8.5" text-anchor="middle" font-weight="bold">Terraform Modules</text>
+
+  <text x="666" y="516" fill="#00e676" font-size="7.5">/terraform/account-baseline/</text>
+  <text x="666" y="527" fill="#3d5a7a" font-size="7">  vpc.tf · iam.tf · variables.tf</text>
+
+  <text x="666" y="543" fill="#00e676" font-size="7.5">/terraform/transit-gateway/</text>
+  <text x="666" y="554" fill="#3d5a7a" font-size="7">  TGW · RAM · attachments · routes</text>
+
+  <text x="666" y="570" fill="#00e676" font-size="7.5">/terraform/monitoring/</text>
+  <text x="666" y="581" fill="#3d5a7a" font-size="7">  cloudwatch.tf · ssm.tf</text>
+  <text x="666" y="591" fill="#3d5a7a" font-size="7">  config-rules.tf</text>
+
+  <text x="666" y="607" fill="#00e676" font-size="7.5">/scps/</text>
+  <text x="666" y="618" fill="#3d5a7a" font-size="7">  deny-expensive-ec2.json</text>
+  <text x="666" y="628" fill="#3d5a7a" font-size="7">  deny-non-approved-regions.json</text>
+
+  <text x="666" y="644" fill="#00e676" font-size="7.5">/.github/workflows/  ← CI/CD</text>
+
+  <!-- TGW → DR arrow -->
+  <line x1="445" y1="436" x2="220" y2="458" stroke="#ff5252" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arr-red)"/>
+  <text x="305" y="452" fill="#6a2a2a" font-size="7">CW alarm → scale DR ASG</text>
+
+  <!-- Prod → S3 CRR arrow -->
+  <line x1="545" y1="436" x2="370" y2="482" stroke="#ff5252" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arr-red)"/>
+  <text x="490" y="462" fill="#6a2a2a" font-size="7">S3 CRR</text>
+
+</svg>
