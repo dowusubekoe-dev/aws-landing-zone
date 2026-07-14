@@ -17,7 +17,7 @@ resource "aws_config_configuration_recorder" "prod" {
 resource "aws_config_delivery_channel" "prod" {
   provider       = aws.prod
   name           = "prod-config-delivery"
-  s3_bucket_name = var.config_bucket_name   # created in Log Archive account
+  s3_bucket_name = var.config_bucket_name # created in Log Archive account
 
   depends_on = [aws_config_configuration_recorder.prod]
 }

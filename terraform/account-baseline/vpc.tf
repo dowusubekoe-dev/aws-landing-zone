@@ -3,7 +3,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 resource "aws_vpc" "dev" {
-  cidr_block           = var.dev_vpc_cidr   # 10.1.0.0/16
+  cidr_block           = var.dev_vpc_cidr # 10.1.0.0/16
   enable_dns_support   = true
   enable_dns_hostnames = true
 
@@ -17,10 +17,10 @@ resource "aws_internet_gateway" "dev" {
 
 # Public subnets — one per AZ
 resource "aws_subnet" "dev_public" {
-  count             = 2
-  vpc_id            = aws_vpc.dev.id
-  cidr_block        = cidrsubnet(var.dev_vpc_cidr, 4, count.index)
-  availability_zone = data.aws_availability_zones.available.names[count.index]
+  count                   = 2
+  vpc_id                  = aws_vpc.dev.id
+  cidr_block              = cidrsubnet(var.dev_vpc_cidr, 4, count.index)
+  availability_zone       = data.aws_availability_zones.available.names[count.index]
   map_public_ip_on_launch = true
 
   tags = { Name = "dev-public-${count.index + 1}", Tier = "public" }
@@ -72,7 +72,7 @@ resource "aws_route_table_association" "dev_private" {
 
 resource "aws_vpc" "prod" {
   provider             = aws.prod
-  cidr_block           = var.prod_vpc_cidr   # 10.2.0.0/16
+  cidr_block           = var.prod_vpc_cidr # 10.2.0.0/16
   enable_dns_support   = true
   enable_dns_hostnames = true
 
@@ -86,11 +86,11 @@ resource "aws_internet_gateway" "prod" {
 }
 
 resource "aws_subnet" "prod_public" {
-  provider          = aws.prod
-  count             = 2
-  vpc_id            = aws_vpc.prod.id
-  cidr_block        = cidrsubnet(var.prod_vpc_cidr, 4, count.index)
-  availability_zone = data.aws_availability_zones.available.names[count.index]
+  provider                = aws.prod
+  count                   = 2
+  vpc_id                  = aws_vpc.prod.id
+  cidr_block              = cidrsubnet(var.prod_vpc_cidr, 4, count.index)
+  availability_zone       = data.aws_availability_zones.available.names[count.index]
   map_public_ip_on_launch = true
 
   tags = { Name = "prod-public-${count.index + 1}", Tier = "public" }
@@ -134,7 +134,7 @@ provider "aws" {
 
 resource "aws_vpc" "dr" {
   provider             = aws.dr
-  cidr_block           = var.dr_vpc_cidr   # 10.3.0.0/16
+  cidr_block           = var.dr_vpc_cidr # 10.3.0.0/16
   enable_dns_support   = true
   enable_dns_hostnames = true
 

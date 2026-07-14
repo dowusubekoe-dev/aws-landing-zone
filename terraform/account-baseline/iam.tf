@@ -124,8 +124,8 @@ resource "aws_iam_role_policy" "github_actions_policy" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect   = "Allow"
-        Action   = ["sts:AssumeRole"]
+        Effect = "Allow"
+        Action = ["sts:AssumeRole"]
         Resource = [
           "arn:aws:iam::${var.dev_account_id}:role/LandingZoneAdmin",
           "arn:aws:iam::${var.prod_account_id}:role/LandingZoneAdmin"

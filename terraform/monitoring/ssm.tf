@@ -9,7 +9,7 @@ resource "aws_ssm_patch_baseline" "amazon_linux_2" {
   operating_system = "AMAZON_LINUX_2"
 
   approval_rule {
-    approve_after_days  = 7     # auto-approve after 7 days; reduces risk vs immediate
+    approve_after_days  = 7 # auto-approve after 7 days; reduces risk vs immediate
     enable_non_security = false
 
     patch_filter {
@@ -35,11 +35,11 @@ resource "aws_ssm_default_patch_baseline" "amazon_linux_2" {
 
 # Maintenance window — patch every Sunday at 02:00 UTC
 resource "aws_ssm_maintenance_window" "weekly_patching" {
-  provider          = aws.prod
-  name              = "lz-weekly-patching"
-  schedule          = "cron(0 2 ? * SUN *)"
-  duration          = 2     # hours
-  cutoff            = 1     # stop registering new tasks 1hr before end
+  provider                   = aws.prod
+  name                       = "lz-weekly-patching"
+  schedule                   = "cron(0 2 ? * SUN *)"
+  duration                   = 2 # hours
+  cutoff                     = 1 # stop registering new tasks 1hr before end
   allow_unassociated_targets = false
 
   tags = { Name = "lz-weekly-patching" }
@@ -94,7 +94,7 @@ resource "aws_ssm_parameter" "db_endpoint" {
   name        = "/prod/app/db-endpoint"
   description = "Production RDS endpoint — referenced by app at runtime"
   type        = "SecureString"
-  value       = var.prod_db_endpoint    # passed in via tfvars, never hardcoded
+  value       = var.prod_db_endpoint # passed in via tfvars, never hardcoded
 
   tags = { Name = "prod-db-endpoint", Environment = "prod" }
 }
@@ -117,7 +117,7 @@ resource "aws_ssm_parameter" "app_version" {
   value       = "1.0.0"
 
   lifecycle {
-    ignore_changes = [value]   # CI pipeline owns this value after initial creation
+    ignore_changes = [value] # CI pipeline owns this value after initial creation
   }
 }
 

@@ -39,7 +39,7 @@ resource "aws_ec2_transit_gateway" "main" {
   default_route_table_association = "enable"
   default_route_table_propagation = "enable"
   dns_support                     = "enable"
-  vpn_ecmp_support                = "enable"   # needed for Direct Connect failover
+  vpn_ecmp_support                = "enable" # needed for Direct Connect failover
 
   tags = { Name = "lz-transit-gateway" }
 }
@@ -50,7 +50,7 @@ resource "aws_ec2_transit_gateway" "main" {
 
 resource "aws_ram_resource_share" "tgw" {
   name                      = "lz-tgw-share"
-  allow_external_principals = false   # org-only sharing
+  allow_external_principals = false # org-only sharing
   tags                      = { Name = "lz-tgw-share" }
 }
 
@@ -109,7 +109,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "prod" {
 
 resource "aws_route" "dev_to_tgw" {
   route_table_id         = var.dev_private_route_table_id
-  destination_cidr_block = "10.0.0.0/8"   # catches 10.1, 10.2, 10.3 in one rule
+  destination_cidr_block = "10.0.0.0/8" # catches 10.1, 10.2, 10.3 in one rule
   transit_gateway_id     = aws_ec2_transit_gateway.main.id
 
   depends_on = [aws_ec2_transit_gateway_vpc_attachment.dev]
@@ -131,7 +131,7 @@ resource "aws_route" "prod_to_tgw" {
 
 resource "aws_customer_gateway" "onprem_sim" {
   bgp_asn    = 65000
-  ip_address = "203.0.113.1"   # TEST-NET-3 — safe placeholder IP
+  ip_address = "203.0.113.1" # TEST-NET-3 — safe placeholder IP
   type       = "ipsec.1"
   tags       = { Name = "simulated-onprem-cgw", Note = "placeholder for Direct Connect demo" }
 }
