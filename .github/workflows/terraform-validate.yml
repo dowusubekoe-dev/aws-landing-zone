@@ -7,8 +7,8 @@ on:
     branches: ["main"]
 
 env:
-  TF_VERSION: "1.6.0"
-  AWS_REGION: "us-east-1"
+  TF_VERSION: "1.9.0"
+  AWS_REGION:  "us-east-1"
 
 jobs:
   # ── Job 1: Format check ──────────────────────────────────────────────────
@@ -25,11 +25,9 @@ jobs:
           terraform_version: ${{ env.TF_VERSION }}
 
       - name: Check formatting
-        run: |
-          terraform fmt -check -recursive
-        working-directory: terraform
+        run: terraform fmt -check -recursive
 
-  # ── Job 2: Validate all modules ──────────────────────────────────────────
+  # ── Job 2: Validate — syntax only, no real AWS calls ────────────────────
   validate:
     name: Terraform Validate
     runs-on: ubuntu-latest
@@ -50,19 +48,38 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region:            ${{ env.AWS_REGION }}
 
-      - name: Terraform Init — ${{ matrix.module }}
+      - name: Write dummy tfvars
+        working-directory: terraform/${{ matrix.module }}
+        run: |
+          cat > terraform.tfvars << 'TFVARS'
+          management_account_id = "000000000001"
+          dev_account_id        = "000000000002"
+          prod_account_id       = "000000000003"
+          ops_email             = "noreply@example.com"
+          config_bucket_name    = "dummy-config-bucket"
+          dr_ami_id             = "ami-00000000000000000"
+          dr_private_subnet_ids = ["subnet-00000000000000001"]
+          prod_db_endpoint      = "dummy.rds.amazonaws.com"
+          TFVARS
+
+      - name: Terraform Init
         working-directory: terraform/${{ matrix.module }}
         run: terraform init -backend=false
 
-      - name: Terraform Validate — ${{ matrix.module }}
+      - name: Terraform Validate
         working-directory: terraform/${{ matrix.module }}
         run: terraform validate
 
-  # ── Job 3: Plan on PR (posts output as comment) ──────────────────────────
+      - name: Clean up dummy tfvars
+        if: always()
+        working-directory: terraform/${{ matrix.module }}
+        run: rm -f terraform.tfvars
+
+  # ── Job 3: Plan on PRs ───────────────────────────────────────────────────
   plan:
     name: Terraform Plan
     runs-on: ubuntu-latest
@@ -84,20 +101,30 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region:            ${{ env.AWS_REGION }}
 
-      - name: Terraform Init — ${{ matrix.module }}
+      - name: Write tfvars from secrets
+        working-directory: terraform/${{ matrix.module }}
+        run: |
+          cat > terraform.tfvars << TFVARS
+          management_account_id = "${{ secrets.MANAGEMENT_ACCOUNT_ID }}"
+          dev_account_id        = "${{ secrets.DEV_ACCOUNT_ID }}"
+          prod_account_id       = "${{ secrets.PROD_ACCOUNT_ID }}"
+          ops_email             = "${{ secrets.OPS_EMAIL }}"
+          config_bucket_name    = "${{ secrets.CONFIG_BUCKET_NAME }}"
+          dr_ami_id             = "${{ secrets.DR_AMI_ID }}"
+          prod_db_endpoint      = "${{ secrets.PROD_DB_ENDPOINT }}"
+          TFVARS
+
+      - name: Terraform Init
         working-directory: terraform/${{ matrix.module }}
         run: terraform init
 
-      - name: Terraform Plan — ${{ matrix.module }}
-        id: plan
+      - name: Terraform Plan
         working-directory: terraform/${{ matrix.module }}
-        run: |
-          terraform plan -no-color -out=tfplan 2>&1 | tee plan_output.txt
-          echo "plan_exit_code=${PIPESTATUS[0]}" >> $GITHUB_OUTPUT
+        run: terraform plan -no-color 2>&1 | tee plan_output.txt
         continue-on-error: true
 
       - name: Post Plan to PR
@@ -105,26 +132,24 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const fs = require('fs');
-            const planOutput = fs.readFileSync('terraform/${{ matrix.module }}/plan_output.txt', 'utf8');
-            const truncated = planOutput.length > 60000
-              ? planOutput.substring(0, 60000) + '\n\n...output truncated...'
-              : planOutput;
-
+            const fs  = require('fs');
+            const raw = fs.readFileSync('terraform/${{ matrix.module }}/plan_output.txt', 'utf8');
             const body = `## Terraform Plan — \`${{ matrix.module }}\`
-            <details>
-            <summary>Click to expand plan output</summary>
+            <details><summary>Click to expand</summary>
 
             \`\`\`hcl
-            ${truncated}
+            ${raw.length > 60000 ? raw.substring(0, 60000) + '\n...truncated...' : raw}
             \`\`\`
             </details>
-
-            *Triggered by: @${{ github.actor }} on \`${{ github.head_ref }}\`*`;
-
+            *@${{ github.actor }} on \`${{ github.head_ref }}\`*`;
             github.rest.issues.createComment({
               issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: body
+              owner:        context.repo.owner,
+              repo:         context.repo.repo,
+              body
             });
+
+      - name: Clean up tfvars
+        if: always()
+        working-directory: terraform/${{ matrix.module }}
+        run: rm -f terraform.tfvars

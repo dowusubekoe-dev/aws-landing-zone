@@ -7,28 +7,22 @@ on:
         description: "Which module to apply"
         required: true
         type: choice
-        options:
-          - account-baseline
-          - transit-gateway
-          - monitoring
-          - all
+        options: [account-baseline, transit-gateway, monitoring, all]
       environment:
         description: "Target environment"
         required: true
         type: choice
-        options:
-          - dev
-          - prod
+        options: [dev, prod]
 
 env:
-  TF_VERSION: "1.6.0"
-  AWS_REGION: "us-east-1"
+  TF_VERSION: "1.9.0"
+  AWS_REGION:  "us-east-1"
 
 jobs:
   apply:
     name: Terraform Apply — ${{ inputs.module }}
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}   # requires approval in GitHub Environments
+    environment: ${{ inputs.environment }}
 
     steps:
       - name: Checkout
@@ -42,9 +36,22 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region:            ${{ env.AWS_REGION }}
+
+      - name: Write tfvars from secrets
+        working-directory: terraform/${{ inputs.module }}
+        run: |
+          cat > terraform.tfvars << TFVARS
+          management_account_id = "${{ secrets.MANAGEMENT_ACCOUNT_ID }}"
+          dev_account_id        = "${{ secrets.DEV_ACCOUNT_ID }}"
+          prod_account_id       = "${{ secrets.PROD_ACCOUNT_ID }}"
+          ops_email             = "${{ secrets.OPS_EMAIL }}"
+          config_bucket_name    = "${{ secrets.CONFIG_BUCKET_NAME }}"
+          dr_ami_id             = "${{ secrets.DR_AMI_ID }}"
+          prod_db_endpoint      = "${{ secrets.PROD_DB_ENDPOINT }}"
+          TFVARS
 
       - name: Terraform Init
         working-directory: terraform/${{ inputs.module }}
@@ -53,3 +60,8 @@ jobs:
       - name: Terraform Apply
         working-directory: terraform/${{ inputs.module }}
         run: terraform apply -auto-approve -var="environment=${{ inputs.environment }}"
+
+      - name: Clean up tfvars
+        if: always()
+        working-directory: terraform/${{ inputs.module }}
+        run: rm -f terraform.tfvars
