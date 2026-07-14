@@ -150,7 +150,10 @@ resource "aws_cloudwatch_dashboard" "landing_zone" {
     widgets = [
       {
         type = "metric"
-        x    = 0; y = 0; width = 12; height = 6
+        x    = 0
+        y    = 0
+        width = 12
+        height = 6
         properties = {
           title  = "Prod EC2 CPU Utilization"
           region = var.aws_region
@@ -162,7 +165,10 @@ resource "aws_cloudwatch_dashboard" "landing_zone" {
       },
       {
         type = "metric"
-        x    = 12; y = 0; width = 12; height = 6
+        x    = 12
+        y    = 0
+        width = 12
+        height = 6
         properties = {
           title  = "Prod EC2 Status Check"
           region = var.aws_region
@@ -174,7 +180,10 @@ resource "aws_cloudwatch_dashboard" "landing_zone" {
       },
       {
         type = "metric"
-        x    = 0; y = 6; width = 12; height = 6
+        x    = 0
+        y    = 6
+        width = 12
+        height = 6
         properties = {
           title  = "DR ASG Capacity (us-west-2)"
           region = "us-west-2"
