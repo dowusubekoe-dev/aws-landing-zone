@@ -1,0 +1,55 @@
+name: Terraform Apply
+
+on:
+  workflow_dispatch:
+    inputs:
+      module:
+        description: "Which module to apply"
+        required: true
+        type: choice
+        options:
+          - account-baseline
+          - transit-gateway
+          - monitoring
+          - all
+      environment:
+        description: "Target environment"
+        required: true
+        type: choice
+        options:
+          - dev
+          - prod
+
+env:
+  TF_VERSION: "1.6.0"
+  AWS_REGION: "us-east-1"
+
+jobs:
+  apply:
+    name: Terraform Apply — ${{ inputs.module }}
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}   # requires approval in GitHub Environments
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Terraform Init
+        working-directory: terraform/${{ inputs.module }}
+        run: terraform init
+
+      - name: Terraform Apply
+        working-directory: terraform/${{ inputs.module }}
+        run: terraform apply -auto-approve -var="environment=${{ inputs.environment }}"
