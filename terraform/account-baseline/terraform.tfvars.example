@@ -1,0 +1,14 @@
+# Copy this file to terraform.tfvars and fill in your real account IDs
+# DO NOT commit terraform.tfvars — it is in .gitignore
+
+aws_region            = "us-east-1"
+environment           = "dev"
+
+management_account_id = "111111111111"   # Your root/management AWS account ID
+dev_account_id        = "222222222222"   # Dev member account ID
+prod_account_id       = "333333333333"   # Prod member account ID
+
+# VPC CIDRs — do not change these unless you have a reason; overlapping CIDRs break TGW routing
+dev_vpc_cidr  = "10.1.0.0/16"
+prod_vpc_cidr = "10.2.0.0/16"
+dr_vpc_cidr   = "10.3.0.0/16"
