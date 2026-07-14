@@ -1,21 +1,24 @@
 variable "aws_region" {
-  type    = string
-  default = "us-east-1"
+  description = "Primary AWS region"
+  type        = string
+  default     = "us-east-1"
 }
 
 variable "management_account_id" {
-  type = string
+  description = "AWS Account ID of the Management account"
+  type        = string
 }
 
 variable "dev_account_id" {
-  type = string
+  description = "AWS Account ID of the Dev workload account"
+  type        = string
 }
 
 variable "prod_account_id" {
-  type = string
+  description = "AWS Account ID of the Prod workload account"
+  type        = string
 }
 
-# Passed in from account-baseline outputs
 variable "dev_vpc_id" {
   description = "Dev VPC ID — from account-baseline output"
   type        = string
